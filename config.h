@@ -26,9 +26,13 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class                        instance    title       tags mask     isfloating   monitor */
+	{ "Gimp",                       NULL,       NULL,       0,            1,           -1 },
+	{ "Firefox",                    NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "Thunderbird", 		NULL,       NULL,       1 << 7,       0,           -1 },
+	{ "Emacs",      		NULL,       NULL,       1 << 0,       0,           -1 },
+	{ "Flock", 		        NULL,       NULL,       1 << 7,       0,           -1 },
+	{ "Nm-connection-editor",  	NULL,       NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
