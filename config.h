@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h> /* required for multimedia keys use */
+
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -60,9 +62,18 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
-static const char *roficmd[]  = { "rofi", "-show", "run", NULL};
+static const char *dmenucmd[]   = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *termcmd[]    = { "st", NULL };
+static const char *roficmd[]    = { "rofi", "-show", "run", NULL};
+
+/* volume control for pulse compatible */
+static const char *upvol[]      = { "amixer", "-q", "sset", "Master", "1%+", NULL };
+static const char *downvol[]    = { "amixer", "-q", "sset", "Master", "1%-", NULL };
+static const char *mute[]       = { "amixer", "-q", "-D", "pulse", "sset", "Master", "toggle", NULL };
+
+/* brightness control with acpilight/xbacklight */
+static const char *upbright[]   = {"xbacklight", "-inc", "5", NULL};
+static const char *downbright[] = {"xbacklight", "-dec", "5", NULL};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -99,6 +110,19 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+
+	/* keybinding for volume control */
+	{ 0,                            XF86XK_AudioRaiseVolume,   spawn,          {.v = upvol } },
+	{ MODKEY,                       XK_equal,                  spawn,          {.v = upvol } },
+        { 0,                            XF86XK_AudioLowerVolume,   spawn,          {.v = downvol } },
+	{ MODKEY,                       XK_minus,                  spawn,          {.v = downvol } },
+        { 0,                            XF86XK_AudioMute,          spawn,          {.v = mute } },
+
+	/*  keybinding for brightness control */
+	{ MODKEY|ShiftMask,             XK_equal,                  spawn,          {.v = upbright } },
+	{ MODKEY|ShiftMask,             XK_minus,                  spawn,          {.v = downbright } },
+	{ 0,                            XF86XK_MonBrightnessUp,    spawn,          {.v = upbright } },
+	{ 0,                            XF86XK_MonBrightnessDown,  spawn,          {.v = downbright } },
 };
 
 /* button definitions */
